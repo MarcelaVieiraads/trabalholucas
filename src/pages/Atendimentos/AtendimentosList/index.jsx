@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../../../services/api'
+import './index.css'
 
 export default function AtendimentosList() {
   const [atendimentos, setAtendimentos] = useState([])
@@ -23,11 +24,11 @@ export default function AtendimentosList() {
   }
 
   return (
-    <div>
+    <div className="atendimentos-list-container">
       <h2>Atendimentos</h2>
 
       <Link to="/atendimentos/novo">
-        <button style={{ marginBottom: '16px' }}>+ Novo Atendimento</button>
+        <button className="novo-atendimento-btn">+ Novo Atendimento</button>
       </Link>
 
       {atendimentos.length === 0 ? (
@@ -35,22 +36,20 @@ export default function AtendimentosList() {
       ) : (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {atendimentos.map(a => (
-            <li key={a.id} style={{
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-              padding: '12px',
-              marginBottom: '10px'
-            }}>
+            <li key={a.id} className="atendimento-card">
               <p><strong>Paciente:</strong> {a.paciente?.nome}</p>
               <p><strong>Profissional:</strong> {a.profissional?.nome} ({a.profissional?.especialidade?.nome})</p>
               <p><strong>Data:</strong> {new Date(a.data_atendimento).toLocaleString()}</p>
               <p><strong>Diagnóstico:</strong> {a.diagnostico || <em>Não preenchido</em>}</p>
 
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div className="atendimento-actions">
                 <Link to={`/atendimentos/editar/${a.id}`}>
                   <button>Editar</button>
                 </Link>
-                <button onClick={() => excluir(a.id)} style={{ backgroundColor: 'red', color: 'white' }}>
+                <button
+                  className="excluir"
+                  onClick={() => excluir(a.id)}
+                >
                   Excluir
                 </button>
               </div>

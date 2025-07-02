@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import api from '../../../services/api'
+import './index.css'
 
 export default function AtendimentosForm() {
   const [cpfBusca, setCpfBusca] = useState('')
@@ -14,7 +15,6 @@ export default function AtendimentosForm() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Se vier da tela de cadastro de paciente, preenche o CPF automaticamente
   useEffect(() => {
     const query = new URLSearchParams(location.search)
     const cpfQuery = query.get('cpf')
@@ -67,10 +67,9 @@ export default function AtendimentosForm() {
   }
 
   return (
-    <div>
+    <div className="atendimento-container">
       <h2>Agendar Atendimento</h2>
 
-      {/* CPF */}
       <label>CPF do Paciente:</label>
       <input
         value={cpfBusca}
@@ -79,15 +78,14 @@ export default function AtendimentosForm() {
       />
       <button type="button" onClick={() => buscarPacientePorCpf(cpfBusca)}>🔍</button>
 
-      {/* Paciente encontrado */}
       {paciente ? (
-        <div style={{ border: '1px solid #ccc', padding: '10px', marginTop: '10px' }}>
+        <div className="paciente-encontrado">
           <strong>Paciente:</strong> {paciente.nome}<br />
           <strong>Email:</strong> {paciente.email}<br />
           <strong>Telefone:</strong> {paciente.telefone}
         </div>
       ) : cpfBusca && (
-        <div style={{ marginTop: '10px' }}>
+        <div className="paciente-nao-encontrado">
           <p>Paciente não encontrado.</p>
           <button onClick={() => navigate(`/pacientes/novo?cpf=${cpfBusca}`)}>
             Cadastrar novo paciente
@@ -97,7 +95,6 @@ export default function AtendimentosForm() {
 
       {paciente && (
         <form onSubmit={salvar}>
-          {/* Especialidade */}
           <label>Especialidade:</label>
           <select
             value={especialidadeId}
@@ -113,7 +110,6 @@ export default function AtendimentosForm() {
             ))}
           </select>
 
-          {/* Profissional */}
           <label>Profissional:</label>
           <select
             value={profissionalId}
@@ -126,7 +122,6 @@ export default function AtendimentosForm() {
             ))}
           </select>
 
-          {/* Data */}
           <label>Data e Hora do Atendimento:</label>
           <input
             type="datetime-local"
@@ -134,8 +129,6 @@ export default function AtendimentosForm() {
             onChange={(e) => setDataAtendimento(e.target.value)}
             required
           />
-
-          {/* Diagnóstico será adicionado somente na edição */}
 
           <button type="submit">Salvar Atendimento</button>
         </form>

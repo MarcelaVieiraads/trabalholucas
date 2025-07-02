@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../../services/api'
+import './index.css'
 
 export default function PacientesForm() {
   const [nome, setNome] = useState('')
@@ -11,35 +12,25 @@ export default function PacientesForm() {
   const [endereco, setEndereco] = useState('')
   const navigate = useNavigate()
 
-const salvar = async (e) => {
-  e.preventDefault()
-  try {
-    await api.post('/pacientes', {
-      nome,
-      cpf,
-      data_nascimento: dataNascimento,
-      telefone,
-      email,
-      endereco
-    })
-
-    const query = new URLSearchParams(window.location.search)
-    const from = query.get('from')
-
-    if (from === 'atendimento') {
-      navigate(`/atendimentos/novo?cpf=${cpf}`)
-    } else {
+  const salvar = async (e) => {
+    e.preventDefault()
+    try {
+      await api.post('/pacientes', {
+        nome,
+        cpf,
+        data_nascimento: dataNascimento,
+        telefone,
+        email,
+        endereco
+      })
       navigate('/pacientes')
+    } catch (error) {
+      console.error('Erro ao salvar paciente:', error)
     }
-
-  } catch (error) {
-    console.error('Erro ao salvar paciente:', error)
   }
-}
-
 
   return (
-    <form onSubmit={salvar}>
+    <form className="pacientes-form-container" onSubmit={salvar}>
       <h2>Novo Paciente</h2>
 
       <label>Nome:</label>

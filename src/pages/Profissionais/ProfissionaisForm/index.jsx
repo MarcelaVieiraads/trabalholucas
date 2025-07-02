@@ -1,24 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../../services/api'
+import './index.css'
 
 export default function ProfissionaisForm() {
   const [nome, setNome] = useState('')
   const [crm, setCrm] = useState('')
-  const [email, setEmail] = useState('')
-  const [telefone, setTelefone] = useState('')
   const [especialidadeId, setEspecialidadeId] = useState('')
+  const [telefone, setTelefone] = useState('')
+  const [email, setEmail] = useState('')
   const [especialidades, setEspecialidades] = useState([])
+
   const navigate = useNavigate()
 
   useEffect(() => {
     api.get('/especialidades')
-      .then(res => {
-        setEspecialidades(res.data)
-      })
-      .catch(err => {
-        console.error('Erro ao carregar especialidades:', err)
-      })
+      .then(res => setEspecialidades(res.data))
+      .catch(err => console.error('Erro ao buscar especialidades:', err))
   }, [])
 
   const salvar = async (e) => {
@@ -26,7 +24,7 @@ export default function ProfissionaisForm() {
     try {
       await api.post('/profissionais', {
         nome,
-        crm, // nome exato esperado pela API
+        crm,
         especialidade_id: especialidadeId,
         telefone,
         email
@@ -38,7 +36,7 @@ export default function ProfissionaisForm() {
   }
 
   return (
-    <form onSubmit={salvar}>
+    <form className="profissionais-form-container" onSubmit={salvar}>
       <h2>Novo Profissional</h2>
 
       <label>Nome:</label>
@@ -55,6 +53,18 @@ export default function ProfissionaisForm() {
         required
       />
 
+      <label>Especialidade:</label>
+      <select
+        value={especialidadeId}
+        onChange={(e) => setEspecialidadeId(e.target.value)}
+        required
+      >
+        <option value="">Selecione...</option>
+        {especialidades.map(e => (
+          <option key={e.id} value={e.id}>{e.nome}</option>
+        ))}
+      </select>
+
       <label>Email:</label>
       <input
         type="email"
@@ -69,20 +79,6 @@ export default function ProfissionaisForm() {
         onChange={(e) => setTelefone(e.target.value)}
         required
       />
-
-      <label>Especialidade:</label>
-      <select
-        value={especialidadeId}
-        onChange={(e) => setEspecialidadeId(e.target.value)}
-        required
-      >
-        <option value="">Selecione...</option>
-        {especialidades.map((e) => (
-          <option key={e.id} value={e.id}>
-            {e.nome}
-          </option>
-        ))}
-      </select>
 
       <button type="submit">Salvar</button>
     </form>

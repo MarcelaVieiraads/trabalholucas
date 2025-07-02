@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import api from '../../../services/api'
 import { useNavigate } from 'react-router-dom'
+import api from '../../../services/api'
+import './index.css'
 
 export default function EspecialidadesForm() {
   const [nome, setNome] = useState('')
@@ -8,15 +9,25 @@ export default function EspecialidadesForm() {
 
   const salvar = async (e) => {
     e.preventDefault()
-    await api.post('/especialidades', { nome })
-    navigate('/especialidades')
+    try {
+      await api.post('/especialidades', { nome })
+      navigate('/especialidades')
+    } catch (error) {
+      console.error('Erro ao salvar especialidade:', error)
+    }
   }
 
   return (
-    <form onSubmit={salvar}>
+    <form className="especialidades-form-container" onSubmit={salvar}>
       <h2>Nova Especialidade</h2>
+
       <label>Nome:</label>
-      <input value={nome} onChange={(e) => setNome(e.target.value)} />
+      <input
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+        required
+      />
+
       <button type="submit">Salvar</button>
     </form>
   )

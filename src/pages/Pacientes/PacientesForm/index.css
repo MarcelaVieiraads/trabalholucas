@@ -1,0 +1,28 @@
+.pacientes-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.pacientes-form-container h2 {
+  margin-bottom: 16px;
+}
+
+.pacientes-form-container label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.pacientes-form-container input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  box-sizing: border-box;
+}
+
+.pacientes-form-container button {
+  margin-top: 16px;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}

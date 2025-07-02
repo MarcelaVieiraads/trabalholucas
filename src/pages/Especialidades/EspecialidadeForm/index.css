@@ -1,0 +1,28 @@
+.especialidades-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.especialidades-form-container h2 {
+  margin-bottom: 16px;
+}
+
+.especialidades-form-container label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.especialidades-form-container input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  box-sizing: border-box;
+}
+
+.especialidades-form-container button {
+  margin-top: 16px;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}

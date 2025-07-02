@@ -1,0 +1,39 @@
+.especialidades-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.especialidades-container h2 {
+  margin-bottom: 16px;
+}
+
+.especialidades-container .novo-btn {
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.especialidade-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+
+.especialidade-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.especialidade-actions button {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.especialidade-actions .excluir {
+  background-color: red;
+  color: white;
+}

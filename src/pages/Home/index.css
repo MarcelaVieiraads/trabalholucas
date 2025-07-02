@@ -1,4 +1,62 @@
-.home {
+.home-container {
   text-align: center;
-  margin-top: 50px;
+  padding: 40px 20px;
+  font-family: sans-serif;
+}
+
+.home-container h1 {
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+.btn-atendimento {
+  background-color: #2e8b57;
+  color: white;
+  padding: 14px 28px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-atendimento:hover {
+  background-color: #247346;
+}
+
+.home-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.home-card {
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 30px;
+  width: 200px;
+  height: 150px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-card:hover {
+  background-color: #e6e6e6;
+  transform: translateY(-4px);
+}
+
+.home-card span {
+  margin-top: 12px;
 }
