@@ -1,40 +1,33 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import api from '../../services/api'
+import { Link } from 'react-router-dom'
 
-function EspecialidadesList() {
-  const [especialidades, setEspecialidades] = useState([]);
+export default function EspecialidadesList() {
+  const [especialidades, setEspecialidades] = useState([])
 
   useEffect(() => {
-    buscar();
-  }, []);
+    api.get('/especialidades').then(response => {
+      setEspecialidades(response.data)
+    })
+  }, [])
 
-  const buscar = () => {
-    const dados = JSON.parse(localStorage.getItem("especialidades")) || [];
-    setEspecialidades(dados);
-  };
-
-  const excluir = (id) => {
-    const dados = JSON.parse(localStorage.getItem("especialidades")) || [];
-    const novos = dados.filter(e => e.id !== id);
-    localStorage.setItem("especialidades", JSON.stringify(novos));
-    buscar();
-  };
+  const excluir = async (id) => {
+    await api.delete(`/especialidades/${id}`)
+    setEspecialidades(especialidades.filter(e => e.id !== id))
+  }
 
   return (
     <div>
-      <h1>Especialidades</h1>
-      <Link to="/especialidades/novo">Cadastrar</Link>
+      <h2>Especialidades</h2>
+      <Link to="/especialidades/novo">Nova Especialidade</Link>
       <ul>
         {especialidades.map(e => (
           <li key={e.id}>
             {e.nome}
-            <Link to={`/especialidades/editar/${e.id}`}> Editar </Link>
             <button onClick={() => excluir(e.id)}>Excluir</button>
           </li>
         ))}
       </ul>
     </div>
-  );
+  )
 }
-
-export default EspecialidadesList;

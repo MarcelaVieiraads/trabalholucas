@@ -1,49 +1,90 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import api from '../../services/api'
 
-function ProfissionaisForm() {
-  const [nome, setNome] = useState("");
-  const navigate = useNavigate();
-  const { id } = useParams();
+export default function ProfissionaisForm() {
+  const [nome, setNome] = useState('')
+  const [crm, setCrm] = useState('')
+  const [email, setEmail] = useState('')
+  const [telefone, setTelefone] = useState('')
+  const [especialidadeId, setEspecialidadeId] = useState('')
+  const [especialidades, setEspecialidades] = useState([])
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (id) {
-      const dados = JSON.parse(localStorage.getItem("profissionais")) || [];
-      const prof = dados.find(p => p.id == id);
-      if (prof) setNome(prof.nome);
-    }
-  }, [id]);
+    api.get('/especialidades')
+      .then(res => {
+        setEspecialidades(res.data)
+      })
+      .catch(err => {
+        console.error('Erro ao carregar especialidades:', err)
+      })
+  }, [])
 
-  const salvar = (e) => {
-    e.preventDefault();
-    const dados = JSON.parse(localStorage.getItem("profissionais")) || [];
-
-    if (id) {
-      const novos = dados.map(p => p.id == id ? { ...p, nome } : p);
-      localStorage.setItem("profissionais", JSON.stringify(novos));
-    } else {
-      const novo = { id: Date.now(), nome };
-      dados.push(novo);
-      localStorage.setItem("profissionais", JSON.stringify(dados));
+  const salvar = async (e) => {
+    e.preventDefault()
+    try {
+      await api.post('/profissionais', {
+        nome,
+        crm, // nome exato esperado pela API
+        especialidade_id: especialidadeId,
+        telefone,
+        email
+      })
+      navigate('/profissionais')
+    } catch (error) {
+      console.error('Erro ao salvar profissional:', error)
     }
-    navigate("/profissionais");
-  };
+  }
 
   return (
-    <div>
-      <h1>{id ? "Editar" : "Cadastrar"} Profissional</h1>
-      <form onSubmit={salvar}>
-        <input
-          type="text"
-          placeholder="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-        <button type="submit">Salvar</button>
-      </form>
-    </div>
-  );
-}
+    <form onSubmit={salvar}>
+      <h2>Novo Profissional</h2>
 
-export default ProfissionaisForm;
+      <label>Nome:</label>
+      <input
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+        required
+      />
+
+      <label>CRM:</label>
+      <input
+        value={crm}
+        onChange={(e) => setCrm(e.target.value)}
+        required
+      />
+
+      <label>Email:</label>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+
+      <label>Telefone:</label>
+      <input
+        value={telefone}
+        onChange={(e) => setTelefone(e.target.value)}
+        required
+      />
+
+      <label>Especialidade:</label>
+      <select
+        value={especialidadeId}
+        onChange={(e) => setEspecialidadeId(e.target.value)}
+        required
+      >
+        <option value="">Selecione...</option>
+        {especialidades.map((e) => (
+          <option key={e.id} value={e.id}>
+            {e.nome}
+          </option>
+        ))}
+      </select>
+
+      <button type="submit">Salvar</button>
+    </form>
+  )
+}

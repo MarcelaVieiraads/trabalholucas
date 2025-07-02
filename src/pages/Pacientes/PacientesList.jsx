@@ -1,40 +1,43 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import api from '../../services/api'
+import { Link } from 'react-router-dom'
 
-function PacientesList() {
-  const [pacientes, setPacientes] = useState([]);
+export default function PacientesList() {
+  const [pacientes, setPacientes] = useState([])
 
   useEffect(() => {
-    buscar();
-  }, []);
+    api.get('/pacientes')
+      .then(res => {
+        setPacientes(res.data)
+      })
+      .catch(err => {
+        console.error('Erro ao buscar pacientes:', err)
+      })
+  }, [])
 
-  const buscar = () => {
-    const dados = JSON.parse(localStorage.getItem("pacientes")) || [];
-    setPacientes(dados);
-  };
-
-  const excluir = (id) => {
-    const dados = JSON.parse(localStorage.getItem("pacientes")) || [];
-    const novos = dados.filter(p => p.id !== id);
-    localStorage.setItem("pacientes", JSON.stringify(novos));
-    buscar();
-  };
+  const excluir = async (id) => {
+    if (confirm('Deseja realmente excluir este paciente?')) {
+      await api.delete(`/pacientes/${id}`)
+      setPacientes(pacientes.filter(p => p.id !== id))
+    }
+  }
 
   return (
     <div>
-      <h1>Pacientes</h1>
-      <Link to="/pacientes/novo">Cadastrar</Link>
+      <h2>Pacientes</h2>
+      <Link to="/pacientes/novo">Novo Paciente</Link>
       <ul>
         {pacientes.map(p => (
           <li key={p.id}>
-            {p.nome}
-            <Link to={`/pacientes/editar/${p.id}`}> Editar </Link>
+            <strong>{p.nome}</strong> — CPF: {p.cpf}<br />
+            Nascimento: {p.data_nascimento}<br />
+            Email: {p.email} | Telefone: {p.telefone}<br />
+            Endereço: {p.endereco}<br />
             <button onClick={() => excluir(p.id)}>Excluir</button>
+            <hr />
           </li>
         ))}
       </ul>
     </div>
-  );
+  )
 }
-
-export default PacientesList;
