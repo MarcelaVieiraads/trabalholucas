@@ -11,22 +11,32 @@ export default function PacientesForm() {
   const [endereco, setEndereco] = useState('')
   const navigate = useNavigate()
 
-  const salvar = async (e) => {
-    e.preventDefault()
-    try {
-      await api.post('/pacientes', {
-        nome,
-        cpf,
-        data_nascimento: dataNascimento,
-        telefone,
-        email,
-        endereco
-      })
+const salvar = async (e) => {
+  e.preventDefault()
+  try {
+    await api.post('/pacientes', {
+      nome,
+      cpf,
+      data_nascimento: dataNascimento,
+      telefone,
+      email,
+      endereco
+    })
+
+    const query = new URLSearchParams(window.location.search)
+    const from = query.get('from')
+
+    if (from === 'atendimento') {
+      navigate(`/atendimentos/novo?cpf=${cpf}`)
+    } else {
       navigate('/pacientes')
-    } catch (error) {
-      console.error('Erro ao salvar paciente:', error)
     }
+
+  } catch (error) {
+    console.error('Erro ao salvar paciente:', error)
   }
+}
+
 
   return (
     <form onSubmit={salvar}>
