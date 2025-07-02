@@ -2,14 +2,14 @@ import { Routes, Route } from 'react-router-dom'
 import NavBar from './components/NavBar'
 import Home from './pages/Home'
 
-import PacientesList from './pages/Pacientes/PacientesList'
-import PacientesForm from './pages/Pacientes/PacientesForm'
-import ProfissionaisList from './pages/Profissionais/ProfissionaisList'
-import ProfissionaisForm from './pages/Profissionais/ProfissionaisForm'
-import EspecialidadesList from './pages/Especialidades/EspecialidadesList'
-import EspecialidadesForm from './pages/Especialidades/EspecialidadesForm'
-import AtendimentosList from './pages/Atendimentos/AtendimentosList'
-import AtendimentosForm from './pages/Atendimentos/AtendimentosForm'
+import PacientesList from './pages/Pacientes/PacientesList/index.jsx'
+import PacientesForm from './pages/Pacientes/PacientesForm/index.jsx'
+import ProfissionaisList from './pages/Profissionais/ProfissionaisList/index.jsx'
+import ProfissionaisForm from './pages/Profissionais/ProfissionaisForm/index.jsx'
+import EspecialidadesList from './pages/Especialidades/EspecialidadeList/index.jsx'
+import EspecialidadesForm from './pages/Especialidades/EspecialidadeForm/index.jsx'
+import AtendimentosList from './pages/Atendimentos/AtendimentosList/index.jsx'
+import AtendimentosForm from './pages/Atendimentos/AtendimentosForm/index.jsx'
 
 export default function App() {
   return (
