@@ -28,6 +28,11 @@
   background-color: #247346;
 }
 
+.home-info {
+  margin: 20px 0;
+  font-size: 18px;
+}
+
 .home-cards {
   display: flex;
   justify-content: center;
@@ -60,3 +65,4 @@
 .home-card span {
   margin-top: 12px;
 }
+

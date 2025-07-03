@@ -15,7 +15,7 @@ export default function PacientesForm() {
   const salvar = async (e) => {
     e.preventDefault()
     try {
-      await api.post('/pacientes', {
+      const res = await api.post('/paciente', {
         nome,
         cpf,
         data_nascimento: dataNascimento,
@@ -23,9 +23,10 @@ export default function PacientesForm() {
         email,
         endereco
       })
+      console.log('Paciente cadastrado com sucesso:', res.data)
       navigate('/pacientes')
     } catch (error) {
-      console.error('Erro ao salvar paciente:', error)
+      console.error('Erro ao salvar paciente:', error.response?.data || error.message)
     }
   }
 

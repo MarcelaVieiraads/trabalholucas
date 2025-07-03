@@ -10,7 +10,7 @@ export default function EspecialidadesForm() {
   const salvar = async (e) => {
     e.preventDefault()
     try {
-      await api.post('/especialidades', { nome })
+      await api.post('/especialidade', { nome })
       navigate('/especialidades')
     } catch (error) {
       console.error('Erro ao salvar especialidade:', error)
@@ -20,14 +20,8 @@ export default function EspecialidadesForm() {
   return (
     <form className="especialidades-form-container" onSubmit={salvar}>
       <h2>Nova Especialidade</h2>
-
       <label>Nome:</label>
-      <input
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-        required
-      />
-
+      <input value={nome} onChange={(e) => setNome(e.target.value)} required />
       <button type="submit">Salvar</button>
     </form>
   )

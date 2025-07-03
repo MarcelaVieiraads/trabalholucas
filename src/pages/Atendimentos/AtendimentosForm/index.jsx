@@ -24,38 +24,39 @@ export default function AtendimentosForm() {
     }
   }, [location.search])
 
-  useEffect(() => {
-    api.get('/especialidades').then(res => setEspecialidades(res.data))
-  }, [])
+useEffect(() => {
+  api.get('/especialidade').then(res => setEspecialidades(res.data))
+}, [])
 
-  const buscarPacientePorCpf = async (cpf) => {
-    try {
-      const res = await api.get('/pacientes')
-      const encontrado = res.data.find(p => p.cpf === cpf)
-      if (encontrado) {
-        setPaciente(encontrado)
-      } else {
-        setPaciente(null)
-      }
-    } catch (err) {
-      console.error('Erro ao buscar paciente:', err)
+const buscarPacientePorCpf = async (cpf) => {
+  try {
+    const res = await api.get('/paciente')
+    const encontrado = res.data.find(p => p.cpf === cpf)
+    if (encontrado) {
+      setPaciente(encontrado)
+    } else {
+      setPaciente(null)
     }
+  } catch (err) {
+    console.error('Erro ao buscar paciente:', err)
   }
+}
 
-  const buscarProfissionaisDaEspecialidade = async (especialidade_id) => {
-    try {
-      const res = await api.get('/profissionais')
-      const filtrados = res.data.filter(p => p.especialidade_id === parseInt(especialidade_id))
-      setProfissionaisFiltrados(filtrados)
-    } catch (err) {
-      console.error('Erro ao buscar profissionais:', err)
-    }
+
+const buscarProfissionaisDaEspecialidade = async (especialidade_id) => {
+  try {
+    const res = await api.get('/profissional')
+    const filtrados = res.data.filter(p => p.especialidade_id === parseInt(especialidade_id))
+    setProfissionaisFiltrados(filtrados)
+  } catch (err) {
+    console.error('Erro ao buscar profissionais:', err)
   }
+}
 
   const salvar = async (e) => {
     e.preventDefault()
     try {
-      await api.post('/atendimentos', {
+      await api.post('/atendimento', {
         paciente_id: paciente.id,
         profissional_id: profissionalId,
         data_atendimento: dataAtendimento

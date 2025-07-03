@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../../services/api'
 import './index.css'
@@ -10,19 +10,16 @@ export default function ProfissionaisForm() {
   const [telefone, setTelefone] = useState('')
   const [email, setEmail] = useState('')
   const [especialidades, setEspecialidades] = useState([])
-
   const navigate = useNavigate()
 
   useEffect(() => {
-    api.get('/especialidades')
-      .then(res => setEspecialidades(res.data))
-      .catch(err => console.error('Erro ao buscar especialidades:', err))
+    api.get('/especialidade').then(res => setEspecialidades(res.data))
   }, [])
 
   const salvar = async (e) => {
     e.preventDefault()
     try {
-      await api.post('/profissionais', {
+      await api.post('/profissional', {
         nome,
         crm,
         especialidade_id: especialidadeId,
@@ -40,25 +37,13 @@ export default function ProfissionaisForm() {
       <h2>Novo Profissional</h2>
 
       <label>Nome:</label>
-      <input
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-        required
-      />
+      <input value={nome} onChange={e => setNome(e.target.value)} required />
 
       <label>CRM:</label>
-      <input
-        value={crm}
-        onChange={(e) => setCrm(e.target.value)}
-        required
-      />
+      <input value={crm} onChange={e => setCrm(e.target.value)} required />
 
       <label>Especialidade:</label>
-      <select
-        value={especialidadeId}
-        onChange={(e) => setEspecialidadeId(e.target.value)}
-        required
-      >
+      <select value={especialidadeId} onChange={e => setEspecialidadeId(e.target.value)} required>
         <option value="">Selecione...</option>
         {especialidades.map(e => (
           <option key={e.id} value={e.id}>{e.nome}</option>
@@ -66,19 +51,10 @@ export default function ProfissionaisForm() {
       </select>
 
       <label>Email:</label>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+      <input value={email} onChange={e => setEmail(e.target.value)} required />
 
       <label>Telefone:</label>
-      <input
-        value={telefone}
-        onChange={(e) => setTelefone(e.target.value)}
-        required
-      />
+      <input value={telefone} onChange={e => setTelefone(e.target.value)} required />
 
       <button type="submit">Salvar</button>
     </form>
