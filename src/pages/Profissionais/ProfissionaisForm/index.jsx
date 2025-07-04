@@ -16,32 +16,30 @@ export default function ProfissionaisForm() {
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
 
-  // Formatação do CRM (CRM/UF 00000)
   const formatarCRM = (value) => {
-    const cleaned = value.replace(/[^a-zA-Z0-9]/g, '')
-    
-    if (!value.startsWith('CRM/') && cleaned.length > 0) {
-      const uf = cleaned.slice(0, 2).toUpperCase()
-      const nums = cleaned.slice(2, 7)
-      return `CRM/${uf} ${nums}`
+    // Remove prefixo CRM/ e espaços
+    let cleaned = value.replace(/^CRM\//i, '').replace(/\s/g, '')
+
+    // Separa letras e números
+    const letras = cleaned.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase()
+    const numeros = cleaned.replace(/[^0-9]/g, '').slice(0, 5)
+
+    // Retorna formatado
+    if (letras || numeros) {
+      return `CRM/${letras}${letras ? ' ' : ''}${numeros}`
     }
-    
-    if (cleaned.startsWith('CRM')) {
-      const uf = cleaned.slice(3, 5).toUpperCase()
-      const nums = cleaned.slice(5, 10)
-      return `CRM/${uf} ${nums}`
-    }
-    
-    return value
+
+    return ''
   }
+
 
   // Formatação do telefone ((00) 00000-0000)
   const formatarTelefone = (value) => {
     const nums = value.replace(/\D/g, '').slice(0, 11)
     if (nums.length <= 2) return `(${nums}`
-    if (nums.length <= 6) return `(${nums.slice(0,2)}) ${nums.slice(2)}`
-    if (nums.length <= 10) return `(${nums.slice(0,2)}) ${nums.slice(2,6)}-${nums.slice(6)}`
-    return `(${nums.slice(0,2)}) ${nums.slice(2,7)}-${nums.slice(7,11)}`
+    if (nums.length <= 6) return `(${nums.slice(0, 2)}) ${nums.slice(2)}`
+    if (nums.length <= 10) return `(${nums.slice(0, 2)}) ${nums.slice(2, 6)}-${nums.slice(6)}`
+    return `(${nums.slice(0, 2)}) ${nums.slice(2, 7)}-${nums.slice(7, 11)}`
   }
 
   // Validação de e-mail
@@ -49,7 +47,7 @@ export default function ProfissionaisForm() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
   }
 
-  // Validação de CRM (formato CRM/UF 12345)
+  // Validação de CRM (formato CRM/UF 12345) - Mantido o original
   const validarCRM = (crm) => {
     return /^CRM\/[A-Z]{2} \d{4,5}$/.test(crm)
   }
@@ -83,12 +81,13 @@ export default function ProfissionaisForm() {
     e.preventDefault()
     const newErrors = {}
 
+    // Validações (mantidas as originais)
     if (!nome) newErrors.nome = 'Nome é obrigatório'
     if (!crm || !validarCRM(crm)) newErrors.crm = 'CRM inválido (formato: CRM/UF 12345)'
     if (!especialidadeId) newErrors.especialidade = 'Especialidade é obrigatória'
     if (!telefone || telefone.replace(/\D/g, '').length < 10) newErrors.telefone = 'Telefone inválido'
     if (!email || !validarEmail(email)) newErrors.email = 'E-mail inválido'
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
@@ -138,19 +137,20 @@ export default function ProfissionaisForm() {
         {errors.crm && <span className="error-message">{errors.crm}</span>}
       </div>
 
+
       <div className="form-group">
         <label>Especialidade *</label>
-        
+
         {especialidades.length > 5 && (
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="search-toggle"
             onClick={() => setShowSearch(!showSearch)}
           >
             {showSearch ? 'Ocultar pesquisa' : 'Pesquisar especialidade'}
           </button>
         )}
-        
+
         {showSearch && (
           <input
             type="text"
@@ -160,7 +160,7 @@ export default function ProfissionaisForm() {
             className="search-input"
           />
         )}
-        
+
         <select
           value={especialidadeId}
           onChange={(e) => setEspecialidadeId(e.target.value)}
