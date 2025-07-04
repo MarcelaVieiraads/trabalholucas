@@ -10,7 +10,7 @@ export default function EspecialidadesForm() {
   const salvar = async (e) => {
     e.preventDefault()
     try {
-      await api.post('/especialidade', { nome })
+      await api.post('/especialidade', { descricao: nome })
       navigate('/especialidades')
     } catch (error) {
       console.error('Erro ao salvar especialidade:', error)

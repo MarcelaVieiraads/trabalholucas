@@ -15,8 +15,19 @@ export default function EspecialidadesList() {
 
   const excluirEspecialidade = async (id) => {
     if (window.confirm('Deseja excluir esta especialidade?')) {
-      await api.delete(`/especialidade/${id}`)
-      setEspecialidades(especialidades.filter(e => e.id !== id))
+      try {
+        await api.delete(`/especialidade/${id}`)
+        setEspecialidades(especialidades.filter(e => e.id !== id))
+      } catch (err) {
+        if (err.response && err.response.status === 400) {
+          // Se o backend retornar status 400, mostra o alert com a mensagem
+          alert(err.response.data.error)
+        } else {
+          // Outros erros (como 500, falha na rede, etc.)
+          alert('Ocorreu um erro ao tentar excluir a especialidade.')
+          console.error('Erro ao excluir especialidade:', err)
+        }
+      }
     }
   }
 
@@ -28,7 +39,7 @@ export default function EspecialidadesList() {
       <ul>
         {especialidades.map(e => (
           <li key={e.id}>
-            <strong>{e.nome}</strong>
+            <strong>{e.descricao}</strong>
             <div>
               <button onClick={() => navigate(`/especialidades/editar/${e.id}`)}>Editar</button>
               <button onClick={() => excluirEspecialidade(e.id)}>Excluir</button>

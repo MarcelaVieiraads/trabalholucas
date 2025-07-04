@@ -46,7 +46,7 @@ export default function ProfissionaisForm() {
       <select value={especialidadeId} onChange={e => setEspecialidadeId(e.target.value)} required>
         <option value="">Selecione...</option>
         {especialidades.map(e => (
-          <option key={e.id} value={e.id}>{e.nome}</option>
+          <option key={e.id} value={e.id}>{e.descricao}</option>
         ))}
       </select>
 

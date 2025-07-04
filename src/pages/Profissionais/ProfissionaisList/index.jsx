@@ -15,8 +15,23 @@ export default function ProfissionaisList() {
 
   const excluirProfissional = async (id) => {
     if (window.confirm('Deseja excluir este profissional?')) {
-      await api.delete(`/profissional/${id}`)
-      setProfissionais(profissionais.filter(p => p.id !== id))
+      try {
+        await api.delete(`/profissional/${id}`)
+        setProfissionais(profissionais.filter(p => p.id !== id))
+      } catch (error) {
+        if (error.response) {
+          // Erros vindos do backend
+          if (error.response.status === 400) {
+            alert(error.response.data.error || 'Este profissional não pode ser excluído pois está vinculado a atendimentos')
+          } else {
+            alert(`Erro: ${error.response.data.message || 'Erro ao excluir profissional'}`)
+          }
+        } else {
+          // Erros de rede ou outros
+          alert('Erro de conexão. Verifique se o servidor está online.')
+          console.error('Erro ao excluir profissional:', error)
+        }
+      }
     }
   }
 
@@ -28,7 +43,7 @@ export default function ProfissionaisList() {
       <ul>
         {profissionais.map(p => (
           <li key={p.id}>
-            <strong>{p.nome}</strong> - CRM: {p.crm} - Especialidade ID: {p.especialidade_id}
+            <strong>{p.nome}</strong> - CRM: {p.crm} - Especialidade: {p.especialidade_id}
             <div>
               <button onClick={() => navigate(`/profissionais/editar/${p.id}`)}>Editar</button>
               <button onClick={() => excluirProfissional(p.id)}>Excluir</button>
